@@ -14,7 +14,7 @@ loc = wd.get_window_loc()
 
 img = wd.get_screen_img()
 
-img1 = img[int(loc[KHEIGHT] * 0.6):, int(loc[KWIDTH] * 0.5):]
+# img1 = img[int(loc[KHEIGHT] * 0.6):, int(loc[KWIDTH] * 0.5):]
 
 
 # button = cv2.imread("E:/me/git/wudong/sample/button/power_button.jpg", 0)
@@ -34,5 +34,7 @@ img1 = img[int(loc[KHEIGHT] * 0.6):, int(loc[KWIDTH] * 0.5):]
 #
 # img1 = cv2.drawMarker(img,  x, y, (0, 0, 255), 0)
 #
+img1 = img[int(loc[KHEIGHT] * WuDongTool.PEOPLE_TOP_RATE):int(loc[KHEIGHT] * WuDongTool.PEOPLE_BOTTOM_RATE)]
+
 cv2.imshow("1", img1)
 cv2.waitKey(0)

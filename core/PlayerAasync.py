@@ -38,6 +38,7 @@ class Player:
         self.__m_list = []
         self.__s_list = []
         self.__power_button = None
+        self.__ad_wait_button = None
         self.__init_datas()
         self.__init_buttons()
         self.__last_rest_time = datetime.utcnow()
@@ -76,7 +77,8 @@ class Player:
                     break
 
     def debug_process_task(self, img):
-        self.__click_people(img)
+        img = self.__click_monster(img)
+        # img = self.__click_people(img)
         return img
 
     def process_task(self, img):
@@ -89,6 +91,7 @@ class Player:
         i = 0
         while i < 10:
             self.__click_people(img)
+            img = self.__wd_window.get_screen_img()
             i += 1
         self.__check_power()
         self.__click_agree_button(img)
@@ -119,6 +122,17 @@ class Player:
         #     MouseTool.click_obj(wx_loc, wx_loc[KWIDTH] * 0.8, wx_loc[KHEIGHT] * 0.95)
 
 
+
+        time.sleep(0.5)
+
+        b = self.__ad_wait_button
+        dst = SiftTool.get_dst_by_button(b[0], b[1], b[2], screen_img)
+        if dst is not None and len(dst) == 4:
+            print("don't have ad for watch")
+            WuDongTool.click_space(self.__wudong_window_loc)
+            time.sleep(0.5)
+            return
+
         b = self.__power_button
         dst = SiftTool.get_dst_by_button(b[0], b[1], b[2], screen_img)
         # print(dst)
@@ -128,7 +142,19 @@ class Player:
             #                     int(dst[0, 0, 1]) + 50, 1, 0.01)
             MouseTool.click_obj(self.__wudong_window_loc, self.__wudong_window_loc[KWIDTH] * 0.5,
                                 self.__wudong_window_loc[KHEIGHT] * 0.6, 1, 0.01)
-            time.sleep(35)
+            star_time = datetime.utcnow()
+            last_img = screen_img
+            print("start watch ad")
+            while datetime.utcnow() < star_time + timedelta(seconds=35):
+                new_img = self.__wd_window.get_screen_img()
+                print(np.abs(new_img - last_img).max())
+                if np.abs(new_img - last_img).max() < 10:
+                    print("watch ad stop click close")
+                    break
+                last_img = new_img.copy()
+                time.sleep(1)
+
+            # time.sleep(35)
             WuDongTool.close_ad(self.__wudong_window_loc)
             return
 
@@ -152,19 +178,22 @@ class Player:
         monster_img = screen_img[self.__people_top_index: self.__people_bottom_index]
         for m in self.__m_list:
             dst = SiftTool.get_dst_by_m(m[0], m[1], m[2], monster_img)
-            # print(dst)
+            print(dst)
             if dst is not None and len(dst) == 4:
                 # dst[:, :, 1] = dst[:, :, 1] + self.__people_top_index
                 print("click monster ")
-                Player.GLOBAL_SCREEN = cv2.polylines(monster_img, [np.int32(dst)], True, 255, 1, cv2.LINE_AA)
-                WuDongTool.click_space(self.__wudong_window_loc)
-                x = int(dst[0, 0, 0]) + 20
-                y = int(dst[0, 0, 1]) + 20 + self.__people_top_index
-                # print(x, y)
-                cv2.drawMarker(screen_img, (x, y), (0, 0, 255), 0)
-                Player.GLOBAL_SCREEN_IMG = monster_img
-                MouseTool.click_obj(self.__wudong_window_loc, x, y, 30, 0.01)
-                break
+                if self.__screen == "debug":
+                    print(dst)
+                    Player.GLOBAL_SCREEN = cv2.polylines(monster_img, [np.int32(dst)], True, 255, 1, cv2.LINE_AA)
+                else:
+                    WuDongTool.click_space(self.__wudong_window_loc)
+                    x = int(dst[0, 0, 0]) + 20
+                    y = int(dst[0, 0, 1]) + 20 + self.__people_top_index
+                    # print(x, y)
+                    cv2.drawMarker(screen_img, (x, y), (0, 0, 255), 0)
+                    Player.GLOBAL_SCREEN_IMG = monster_img
+                    MouseTool.click_obj(self.__wudong_window_loc, x, y, 30, 0.01)
+                    break
 
         return monster_img
 
@@ -204,9 +233,6 @@ class Player:
         loc = self.__wudong_window_loc
         self.__people_top_index = int(loc[KHEIGHT] * WuDongTool.PEOPLE_TOP_RATE)
         self.__people_bottom_index = int(loc[KHEIGHT] * WuDongTool.PEOPLE_BOTTOM_RATE)
-        loc = self.__wudong_window_loc
-        self.__people_top_index = int(loc[KHEIGHT] * WuDongTool.PEOPLE_TOP_RATE)
-        self.__people_bottom_index = int(loc[KHEIGHT] * WuDongTool.PEOPLE_BOTTOM_RATE)
         # file_list = os.listdir("sample/p/")
         p_path = self.__root_path + "/sample/p/"
         m_path = self.__root_path + "/sample/m/"
@@ -236,11 +262,19 @@ class Player:
         kp1, des1 = SiftTool.SIFT.detectAndCompute(img, None)
         self.__power_share_button = [kp1, des1, img]
 
+        img = cv2.imread(self.__root_path + "/sample/button/ad_wait.png", 0)
+        kp1, des1 = SiftTool.SIFT.detectAndCompute(img, None)
+        self.__ad_wait_button = [kp1, des1, img]
+
     def __rest_game(self):
+        self.__check_wudong()
         if datetime.utcnow() <= self.__last_rest_time + timedelta(minutes=10):
             return
         WuDongTool.rest_screen_main_building(self.__wudong_window_loc)
         self.__last_rest_time = datetime.utcnow()
+
+    def __check_wudong(self):
+        img = self.__wd_window.get_screen_img()
 
     def __click_agree_button(self, screen_img):
         dst = SiftTool.get_dst_by_button(self.__agree_button[0], self.__agree_button[1], self.__agree_button[2], screen_img)

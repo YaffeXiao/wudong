@@ -13,9 +13,9 @@ class WuDongTool:
     POWER_TOP = 0.6
     POWER_LEFT = 0.2
 
-    # 小人相反对位置
-    PEOPLE_TOP_RATE = 0.70
-    PEOPLE_BOTTOM_RATE = 0.90
+    # 小人相对位置
+    PEOPLE_TOP_RATE = 0.72
+    PEOPLE_BOTTOM_RATE = 0.85
 
     # 返回按钮
     BACK_BUTTON_LEFT = 0.05

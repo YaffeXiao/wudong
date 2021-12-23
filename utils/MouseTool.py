@@ -22,6 +22,9 @@ class MouseTool:
         x = loc[KLEFT] + obj_x
         y = loc[KTOP] + obj_y
         print("click obj : {%d, %d}  clicks: %d,  interval: %f" % (x, y, clicks, interval))
+        if x <= loc[KLEFT] or x >= loc[KLEFT] + loc[KWIDTH] or y <= loc[KTOP] or y >= loc[KTOP] + loc[KHEIGHT]:
+            print("click point is not inner window")
+            return
         MouseTool._click(x, y, clicks, interval)
 
     @staticmethod
