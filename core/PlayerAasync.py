@@ -41,8 +41,8 @@ class Player:
         self.__s_list = []
         self.__power_button = None
         self.__ad_wait_button = None
-        self.__ws_button = None
         self.__xiaoji_get_button = None
+        self.__wasai_buttons = []
         self.__init_datas()
         self.__init_buttons()
         self.__last_rest_time = datetime.utcnow()
@@ -91,11 +91,11 @@ class Player:
 
     def process_task(self, img):
         self.__check_xiaoji()
-        self.__check_wasai(self.__wudong_window_loc)
+        self.__check_wasai()
         self.__check_cqg()
-        self.__check_ct(self.__wudong_window_loc)
-        self.__check_ys(self.__wudong_window_loc)
-        self.__check_yy(self.__wudong_window_loc)
+        self.__check_ct()
+        self.__check_ys()
+        self.__check_yy()
         self.__click_monster(img)
         i = 0
         while i < 10:
@@ -145,7 +145,7 @@ class Player:
 
         b = self.__power_button
         dst = SiftTool.get_dst_by_button(b[0], b[1], b[2], screen_img)
-        print(dst)
+        # print(dst)
         if dst is not None and len(dst) == 4:
             x = int(dst[0, 0, 0]) + 100
             y = int(dst[0, 0, 1]) + 50
@@ -221,42 +221,42 @@ class Player:
         WuDongTool.click_cqg(self.__wudong_window_loc)
         self.__last_cqg_time = datetime.utcnow()
 
-    def __check_ct(self, loc):
+    def __check_ct(self):
         if datetime.utcnow() <= self.__last_ct_time + timedelta(minutes=1):
             return
         print("check restaurant ~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-        WuDongTool.check_restaurant(loc)
+        WuDongTool.check_restaurant(self.__wudong_window_loc)
         self.__last_ct_time = datetime.utcnow()
         # time.sleep(0.5)
 
-    def __check_ys(self, loc):
+    def __check_ys(self):
         if datetime.utcnow() <= self.__last_ys_time + timedelta(minutes=1):
             return
         print("check showers ~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-        WuDongTool.check_showers(loc)
+        WuDongTool.check_showers(self.__wudong_window_loc)
         self.__last_ys_time = datetime.utcnow()
         # time.sleep(0.5)
 
-    def __check_yy(self, loc):
+    def __check_yy(self):
         if datetime.utcnow() <= self.__last_yy_time + timedelta(minutes=1):
             return
         print("check cinema ~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-        WuDongTool.check_cinema(loc)
+        WuDongTool.check_cinema(self.__wudong_window_loc)
         self.__last_yy_time = datetime.utcnow()
         # time.sleep(0.5)
 
-    def __check_wasai(self, loc):
+    def __check_wasai(self):
         screen_img = self.__wd_window.get_screen_img()
-        # if datetime.utcnow() <= self.__last_yy_time + timedelta(minutes=1):
-        #     return screen_img
+        if datetime.utcnow() <= self.__last_yy_time + timedelta(minutes=1):
+            return screen_img
         print("check wasai ~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-
-        b = self.__ws_button
-        dst = SiftTool.get_dst_by_m(b[0], b[1], b[2], self.__wd_window.get_screen_img())
-        if dst is not None and len(dst) == 4:
-            cv2.polylines(screen_img, [np.int32(dst)], True, 255, 1, cv2.LINE_AA)
-            WuDongTool.click_wasai(loc, dst)
-            self.__last_yy_time = datetime.utcnow()
+        for b in self.__wasai_buttons:
+            dst = SiftTool.get_dst_by_m(b[0], b[1], b[2], self.__wd_window.get_screen_img())
+            if dst is not None and len(dst) == 4:
+                cv2.polylines(screen_img, [np.int32(dst)], True, 255, 1, cv2.LINE_AA)
+                WuDongTool.click_wasai(self.__wudong_window_loc, dst)
+                self.__last_yy_time = datetime.utcnow()
+                break
         return screen_img
 
     def __init_datas(self):
@@ -295,10 +295,13 @@ class Player:
         img = cv2.imread(self.__root_path + "/sample/button/ad_wait.png", 0)
         kp1, des1 = SiftTool.SIFT.detectAndCompute(img, None)
         self.__ad_wait_button = [kp1, des1, img]
-
-        img = cv2.imread(self.__root_path + "/sample/button/wasai.png", 0)
-        kp1, des1 = SiftTool.SIFT.detectAndCompute(img, None)
-        self.__ws_button = [kp1, des1, img]
+        wasai_files = [self.__root_path + "/sample/button/wasai1.png",
+                       self.__root_path + "/sample/button/wasai2.png",
+                       self.__root_path + "/sample/button/wasai3.png"]
+        for f in wasai_files:
+            img = cv2.imread(f, 0)
+            kp1, des1 = SiftTool.SIFT.detectAndCompute(img, None)
+            self.__wasai_buttons.append([kp1, des1, img])
 
         img = cv2.imread(self.__root_path + "/sample/button/xiaoji_get_button.png", 0)
         kp1, des1 = SiftTool.SIFT.detectAndCompute(img, None)
