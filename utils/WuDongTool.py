@@ -165,6 +165,8 @@ class WuDongTool:
         if watch_ad is False:
             MouseTool.click_rate_window(loc, WuDongTool.DWAD_LEFT, WuDongTool.DWAD_TOP)
         WuDongTool.back_game_main_building(loc)
+        time.sleep(0.5)
+        MouseTool.click_rate_window(loc, WuDongTool.BACK_BUTTON_LEFT, WuDongTool.BACK_BUTTON_TOP)
 
     @staticmethod
     def click_wasai(loc, dst):
