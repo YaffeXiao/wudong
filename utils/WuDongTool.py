@@ -181,15 +181,16 @@ class WuDongTool:
         y_step = 0.15
         for i in range(2):
             for j in range(3):
-                WuDongTool.click_buy_goods(loc, start_x_rate + i * x_step, start_y_rate + y_step)
+                WuDongTool.click_buy_goods(loc, start_x_rate + j * x_step, start_y_rate + i * y_step)
+        WuDongTool.click_space(loc)
 
     @staticmethod
     def click_buy_goods(loc, x_rate, y_rate):
-        MouseTool.click_obj(loc, loc[KLEFT] * x_rate, loc[KTOP] * y_rate)
+        MouseTool.click_obj(loc, loc[KWIDTH] * x_rate, loc[KHEIGHT] * y_rate)
         time.sleep(0.3)
-        MouseTool.click_obj(loc, loc[KLEFT] * 0.5, loc[KTOP] * 0.62)
+        MouseTool.click_obj(loc, loc[KWIDTH] * 0.5, loc[KHEIGHT] * 0.62)
         time.sleep(0.3)
-        WuDongTool.click_space(loc)
+        MouseTool.click_obj(loc, loc[KWIDTH] * 0.5, loc[KHEIGHT] * 0.62)
         time.sleep(0.5)
 
     @staticmethod

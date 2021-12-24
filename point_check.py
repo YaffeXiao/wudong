@@ -36,7 +36,7 @@ img = wd.get_screen_img()
 #
 # img1 = img[int(loc[KHEIGHT] * WuDongTool.PEOPLE_TOP_RATE):int(loc[KHEIGHT] * WuDongTool.PEOPLE_BOTTOM_RATE)]
 # img1 = img[int(loc[KHEIGHT] * WuDongTool.AD_CLOSE_LEFT):,int(loc[KWIDTH] * WuDongTool.AD_CLOSE_TOP):]
-img1 = img[int(loc[KHEIGHT] *0.62):, int(loc[KWIDTH] * 0.5):]
+img1 = img[int(loc[KHEIGHT] *0.7):, int(loc[KWIDTH] * 0.5):]
 # img1 = img[int(loc[KHEIGHT] *0.6):, int(loc[KWIDTH] * 0.6):]
 cv2.imshow("1", img1)
 cv2.waitKey(0)

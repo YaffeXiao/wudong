@@ -41,7 +41,8 @@ class Player:
         self.__s_list = []
         self.__power_button = None
         self.__ad_wait_button = None
-        self.__button_ws_button = None
+        self.__ws_button = None
+        self.__xiaoji_get_button = None
         self.__init_datas()
         self.__init_buttons()
         self.__last_rest_time = datetime.utcnow()
@@ -83,10 +84,14 @@ class Player:
         # img = self.__click_monster(img)
         # img = self.__click_people(img)
         img = self.__check_wasai(self.__wudong_window_loc)
+
+        # self.__rest_game()
+
         return img
 
     def process_task(self, img):
 
+        self.__check_wasai(self.__wudong_window_loc)
         self.__check_cqg()
         self.__check_ct(self.__wudong_window_loc)
         self.__check_ys(self.__wudong_window_loc)
@@ -242,11 +247,11 @@ class Player:
 
     def __check_wasai(self, loc):
         screen_img = self.__wd_window.get_screen_img()
-        if datetime.utcnow() <= self.__last_yy_time + timedelta(minutes=1):
-            return
+        # if datetime.utcnow() <= self.__last_yy_time + timedelta(minutes=1):
+        #     return screen_img
         print("check wasai ~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 
-        b = self.__button_ws_button
+        b = self.__ws_button
         dst = SiftTool.get_dst_by_m(b[0], b[1], b[2], self.__wd_window.get_screen_img())
         if dst is not None and len(dst) == 4:
             cv2.polylines(screen_img, [np.int32(dst)], True, 255, 1, cv2.LINE_AA)
@@ -293,10 +298,13 @@ class Player:
 
         img = cv2.imread(self.__root_path + "/sample/button/wasai.png", 0)
         kp1, des1 = SiftTool.SIFT.detectAndCompute(img, None)
-        self.__button_ws_button = [kp1, des1, img]
+        self.__ws_button = [kp1, des1, img]
 
     def __rest_game(self):
-        self.__check_wudong()
+        # self.__check_wudong()
+
+        self.__check_xiaoji()
+
         if datetime.utcnow() <= self.__last_rest_time + timedelta(minutes=10):
             return
         WuDongTool.rest_screen_main_building(self.__wudong_window_loc)
@@ -314,5 +322,15 @@ class Player:
             MouseTool.click_obj(self.__wudong_window_loc, x, y)
         return screen_img
 
+    def __check_xiaoji(self):
+        screen_img = self.__wd_window.get_screen_img()
+        dst = SiftTool.get_dst_by_button(self.__agree_button[0], self.__agree_button[1], self.__agree_button[2],
+                                         screen_img)
+        if dst is not None and len(dst) == 4:
+            x = int(dst[0, 0, 0]) + 50
+            y = int(dst[0, 0, 1]) + 20
+            MouseTool.click_obj(self.__wudong_window_loc, x, y)
+            WuDongTool.click_space(self.__wudong_window_loc)
+            WuDongTool.click_space(self.__wudong_window_loc)
 
 
