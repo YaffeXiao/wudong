@@ -90,7 +90,7 @@ class Player:
         return img
 
     def process_task(self, img):
-
+        self.__check_xiaoji()
         self.__check_wasai(self.__wudong_window_loc)
         self.__check_cqg()
         self.__check_ct(self.__wudong_window_loc)
