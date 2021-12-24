@@ -135,7 +135,7 @@ class WuDongTool:
     def check_restaurant(loc):
         MouseTool.click_rate_window(loc, WuDongTool.RESTAURANT_LEFT, WuDongTool.RESTAURANT_TOP)
         MouseTool.reset_window_center(loc)
-        time.sleep(0.5)
+        time.sleep(1)
         MouseTool.drag_rel(300, 0)
         MouseTool.click_rate_window(loc, WuDongTool.RESTAURANT_1_LEFT, WuDongTool.RESTAURANT_1_TOP)
         MouseTool.click_rate_window(loc, WuDongTool.RESTAURANT_2_LEFT, WuDongTool.RESTAURANT_2_TOP)
@@ -146,7 +146,7 @@ class WuDongTool:
     def check_showers(loc):
         MouseTool.click_rate_window(loc, WuDongTool.SHOWERS_LEFT, WuDongTool.SHOWERS_TOP)
         MouseTool.reset_window_center(loc)
-        time.sleep(0.5)
+        time.sleep(1)
         MouseTool.drag_rel(300, 0)
         MouseTool.click_rate_window(loc, WuDongTool.SHOWERS_1_LEFT, WuDongTool.SHOWERS_1_TOP)
         MouseTool.click_rate_window(loc, WuDongTool.SHOWERS_2_LEFT, WuDongTool.SHOWERS_2_TOP)
@@ -157,7 +157,7 @@ class WuDongTool:
     def check_cinema(loc, watch_ad=False):
         MouseTool.click_rate_window(loc, WuDongTool.CINEMA_LEFT, WuDongTool.CINEMA_TOP)
         MouseTool.reset_window_center(loc)
-        time.sleep(0.5)
+        time.sleep(1)
         MouseTool.drag_rel(300, 0)
         MouseTool.click_rate_window(loc, WuDongTool.CINEMA_FLOWER_LEFT, WuDongTool.CINEMA_FLOWER_TOP)
         time.sleep(0.5)
