@@ -26,8 +26,12 @@ class WuDongTool:
     CQG_TOP = 0.6
 
     #广告关闭
-    AD_CLOSE_LEFT = 0.94
-    AD_CLOSE_TOP = 0.03
+    AD_CLOSE_LEFT = 0.91
+    AD_CLOSE_TOP = 0.04
+
+    # #观看广告按钮
+    # WATCH_AD_button_LEFT = 0.5
+    # WATCH_AD_button_TOP = 0.6
 
     # 餐厅
     RESTAURANT_LEFT = 0.7
@@ -55,6 +59,13 @@ class WuDongTool:
 
     SHOWERS_3_LEFT = 0.54
     SHOWERS_3_TOP = 0.46
+
+    # 电影院
+    CINEMA_LEFT = 0.32
+    CINEMA_TOP = 0.37
+
+    CINEMA_FLOWER_LEFT = 0.6
+    CINEMA_FLOWER_TOP = 0.6
 
     # 不看广告按钮
     DWAD_LEFT = 0.3
@@ -143,6 +154,43 @@ class WuDongTool:
         WuDongTool.back_game_main_building(loc)
 
     @staticmethod
+    def check_cinema(loc, watch_ad=False):
+        MouseTool.click_rate_window(loc, WuDongTool.CINEMA_LEFT, WuDongTool.CINEMA_TOP)
+        MouseTool.reset_window_center(loc)
+        time.sleep(0.5)
+        MouseTool.drag_rel(300, 0)
+        MouseTool.click_rate_window(loc, WuDongTool.CINEMA_FLOWER_LEFT, WuDongTool.CINEMA_FLOWER_TOP)
+        time.sleep(0.5)
+        # 目前不看广告
+        if watch_ad is False:
+            MouseTool.click_rate_window(loc, WuDongTool.DWAD_LEFT, WuDongTool.DWAD_TOP)
+        WuDongTool.back_game_main_building(loc)
+
+    @staticmethod
+    def click_wasai(loc, dst):
+        x = int(dst[0, 0, 0]) + 20
+        y = int(dst[0, 0, 1]) + 20
+        MouseTool.click_obj(loc, x, y)
+        time.sleep(0.5)
+        WuDongTool.click_buy_goods(loc, 0.25, 0.35)#特价
+        start_x_rate = 0.25
+        start_y_rate = 0.55
+        x_step = 0.25
+        y_step = 0.15
+        for i in range(2):
+            for j in range(3):
+                WuDongTool.click_buy_goods(loc, start_x_rate + i * x_step, start_y_rate + y_step)
+
+    @staticmethod
+    def click_buy_goods(loc, x_rate, y_rate):
+        MouseTool.click_obj(loc, loc[KLEFT] * x_rate, loc[KTOP] * y_rate)
+        time.sleep(0.3)
+        MouseTool.click_obj(loc, loc[KLEFT] * 0.5, loc[KTOP] * 0.62)
+        time.sleep(0.3)
+        WuDongTool.click_space(loc)
+        time.sleep(0.5)
+
+    @staticmethod
     def draw_marker(loc, img):
         x = loc[KLEFT] + int(loc[KWIDTH] * WuDongTool.RESTAURANT_1_LEFT)
         y = loc[KTOP] + int(loc[KHEIGHT] * WuDongTool.RESTAURANT_1_TOP)
@@ -153,3 +201,5 @@ class WuDongTool:
         x = int(loc[KWIDTH] * WuDongTool.AD_CLOSE_LEFT)
         y = int(loc[KHEIGHT] * WuDongTool.AD_CLOSE_TOP)
         MouseTool.click_obj(loc, x, y)
+
+

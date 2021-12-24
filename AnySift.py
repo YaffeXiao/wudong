@@ -19,11 +19,16 @@ root_path = "E:/me/git/wudong/test_data"
 # sift_t(img1, img2, 255)
 
 
-wd = WindowTool()
-loc = wd.get_window_loc()
-img2 = wd.get_screen_img()
-
-# img1_path = os.path.join(root_path, "button/power_button.jpg")
-img1_path = os.path.join("E:/me/git/wudong/sample/button/power_button.jpg")
-img1 = cv2.imread(img1_path)  # 查询图像
-sift_t(img1, img2, 0)
+# wd = WindowTool()
+# loc = wd.get_window_loc()
+# img2 = wd.get_screen_img()
+#
+# # img1_path = os.path.join(root_path, "button/power_button.jpg")
+# img1_path = os.path.join("E:/me/git/wudong/sample/button/power_button.jpg")
+# img1 = cv2.imread(img1_path)  # 查询图像
+# sift_t(img1, img2, 0)
+root_path = "E:/me/git/wudong/sample"
+img1_path = os.path.join(root_path, "button/wasai.png")
+img2 = WindowTool().get_screen_img()
+img1 = cv2.imread(img1_path)
+sift_t(img1, img2)
