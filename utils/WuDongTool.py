@@ -72,17 +72,21 @@ class WuDongTool:
     DWAD_TOP = 0.6
 
     @staticmethod
+    def click_back_button(loc):
+        MouseTool.click_rate_window(loc, WuDongTool.BACK_BUTTON_LEFT, WuDongTool.BACK_BUTTON_TOP)
+
+    @staticmethod
     def rest_game_main_building(loc):
         WuDongTool.click_space(loc)
         time.sleep(1)
-        MouseTool.click_rate_window(loc, WuDongTool.BACK_BUTTON_LEFT, WuDongTool.BACK_BUTTON_TOP)
+        WuDongTool.click_back_button(loc)
         time.sleep(1)
         WuDongTool.click_space(loc)
         time.sleep(1)
 
     @staticmethod
     def back_game_main_building(loc):
-        MouseTool.click_rate_window(loc, WuDongTool.BACK_BUTTON_LEFT, WuDongTool.BACK_BUTTON_TOP)
+        WuDongTool.click_back_button(loc)
         time.sleep(1)
         WuDongTool.click_space(loc)
 
@@ -166,7 +170,7 @@ class WuDongTool:
             MouseTool.click_rate_window(loc, WuDongTool.DWAD_LEFT, WuDongTool.DWAD_TOP)
         WuDongTool.back_game_main_building(loc)
         time.sleep(0.5)
-        MouseTool.click_rate_window(loc, WuDongTool.BACK_BUTTON_LEFT, WuDongTool.BACK_BUTTON_TOP)
+        WuDongTool.click_back_button(loc)
 
     @staticmethod
     def click_wasai(loc, dst):

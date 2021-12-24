@@ -14,7 +14,7 @@ def sift_t(img1, _img2, color=0):
     img1 = cv2.cvtColor(img1, cv2.COLOR_BGR2GRAY)
     img2 = cv2.cvtColor(_img2, cv2.COLOR_BGR2GRAY)
     # 初始化SIFT检测器
-    sift = cv2.xfeatures2d.SIFT_create()
+    sift = cv2.SIFT_create()
 
     # 使用SIFT检测器寻找关键点和描述符
     kp1, des1 = sift.detectAndCompute(img1, None)

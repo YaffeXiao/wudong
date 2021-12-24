@@ -83,8 +83,8 @@ class Player:
     def debug_process_task(self, img):
         # img = self.__click_monster(img)
         # img = self.__click_people(img)
-        img = self.__check_wasai(self.__wudong_window_loc)
-
+        # img = self.__check_wasai(self.__wudong_window_loc)
+        self.__check_xiaoji()
         # self.__rest_game()
 
         return img
@@ -300,6 +300,10 @@ class Player:
         kp1, des1 = SiftTool.SIFT.detectAndCompute(img, None)
         self.__ws_button = [kp1, des1, img]
 
+        img = cv2.imread(self.__root_path + "/sample/button/xiaoji_get_button.png", 0)
+        kp1, des1 = SiftTool.SIFT.detectAndCompute(img, None)
+        self.__xiaoji_get_button = [kp1, des1, img]
+
     def __rest_game(self):
         # self.__check_wudong()
 
@@ -324,13 +328,14 @@ class Player:
 
     def __check_xiaoji(self):
         screen_img = self.__wd_window.get_screen_img()
-        dst = SiftTool.get_dst_by_button(self.__agree_button[0], self.__agree_button[1], self.__agree_button[2],
-                                         screen_img)
+        b = self.__xiaoji_get_button
+        dst = SiftTool.get_dst_by_button(b[0], b[1], b[2], screen_img)
         if dst is not None and len(dst) == 4:
-            x = int(dst[0, 0, 0]) + 50
-            y = int(dst[0, 0, 1]) + 20
+            print("find xiaoji button~~~~~~~~~~~~~~~~~~~~~~~~")
+            x = int(dst[0, 0, 0]) + 30
+            y = int(dst[0, 0, 1]) + 10
             MouseTool.click_obj(self.__wudong_window_loc, x, y)
             WuDongTool.click_space(self.__wudong_window_loc)
-            WuDongTool.click_space(self.__wudong_window_loc)
+            WuDongTool.click_back_button(self.__wudong_window_loc)
 
 

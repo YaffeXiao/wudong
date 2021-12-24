@@ -1,6 +1,7 @@
 
 
 from utils.WindowTool import WindowTool
+from core.SiftTool import SiftTool
 from screen_test.AnySift import *
 import os
 
@@ -28,7 +29,14 @@ root_path = "E:/me/git/wudong/test_data"
 # img1 = cv2.imread(img1_path)  # 查询图像
 # sift_t(img1, img2, 0)
 root_path = "E:/me/git/wudong/sample"
-img1_path = os.path.join(root_path, "button/wasai.png")
+img1_path = os.path.join(root_path, "button/xiaoji_get_button.png")
 img2 = WindowTool().get_screen_img()
 img1 = cv2.imread(img1_path)
 sift_t(img1, img2)
+
+img = cv2.imread(root_path + "/sample/button/xiaoji_get_button.png", 0)
+kp1, des1 = SiftTool.SIFT.detectAndCompute(img, None)
+__xiaoji_get_button = [kp1, des1, img]
+
+dst = SiftTool.get_dst_by_button(self.__agree_button[0], self.__agree_button[1], self.__agree_button[2],
+                                 screen_img)
