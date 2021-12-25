@@ -1,4 +1,5 @@
 from utils.MouseTool import MouseTool
+from core.SiftTool import SiftTool
 from utils.ConVar import *
 import time, cv2
 
@@ -34,8 +35,8 @@ class WuDongTool:
     # WATCH_AD_button_TOP = 0.6
 
     # 餐厅
-    RESTAURANT_LEFT = 0.7
-    RESTAURANT_TOP = 0.59
+    RESTAURANT_LEFT = 0.73
+    RESTAURANT_TOP = 0.57
 
     RESTAURANT_1_LEFT = 0.23
     RESTAURANT_1_TOP = 0.46
@@ -46,10 +47,14 @@ class WuDongTool:
     RESTAURANT_3_LEFT = 0.76
     RESTAURANT_3_TOP = 0.305
 
+    #靠右侧后相对位置
+    RESTAURANT_4_LEFT = 0.57
+    RESTAURANT_4_TOP = 0.57
+
 
     # 浴室
-    SHOWERS_LEFT = 0.6
-    SHOWERS_TOP = 0.48
+    SHOWERS_LEFT = 0.62
+    SHOWERS_TOP = 0.45
 
     SHOWERS_1_LEFT = 0.33
     SHOWERS_1_TOP = 0.52
@@ -77,18 +82,18 @@ class WuDongTool:
 
     @staticmethod
     def rest_game_main_building(loc):
-        WuDongTool.click_space(loc)
+        WuDongTool.click_window_space(loc)
         time.sleep(1)
         WuDongTool.click_back_button(loc)
         time.sleep(1)
-        WuDongTool.click_space(loc)
+        WuDongTool.click_window_space(loc)
         time.sleep(1)
 
     @staticmethod
     def back_game_main_building(loc):
         WuDongTool.click_back_button(loc)
         time.sleep(1)
-        WuDongTool.click_space(loc)
+        WuDongTool.click_window_space(loc)
 
     @staticmethod
     def click_space(loc):
@@ -97,22 +102,22 @@ class WuDongTool:
 
     @staticmethod
     def rest_screen_main_building(loc):
-        # WuDongTool.rest_game_main_building(loc)
+        WuDongTool.rest_game_main_building(loc)
         i = 0
         while i < 3:
             MouseTool.reset_window_center(loc)
-            MouseTool.drag_rel(300, 0)
+            MouseTool.drag_rel(200, 0)
             time.sleep(0.2)
             i += 1
-        j = 0
-        while j < 3:
-            MouseTool.reset_window_center(loc)
-            MouseTool.drag_rel(0, -300)
-            time.sleep(0.2)
-            j += 1
+        # j = 0
+        # while j < 3:
+        #     MouseTool.reset_window_center(loc)
+        #     MouseTool.drag_rel(0, -200)
+        #     time.sleep(0.2)
+        #     j += 1
         time.sleep(1)
         MouseTool.reset_window_center(loc)
-        MouseTool.drag_rel(-int(loc[KWIDTH] / 2 * 0.69), 0)
+        MouseTool.drag_rel(-int(loc[KWIDTH] / 2 + 23), 0)
         time.sleep(2)
 
     @staticmethod
@@ -123,7 +128,7 @@ class WuDongTool:
             MouseTool.click_rate_window(loc, WuDongTool.DWAD_LEFT, WuDongTool.DWAD_TOP)
 
     @staticmethod
-    def click_space(loc):
+    def click_window_space(loc):
         MouseTool.click_rate_window(loc, WuDongTool.SPACE_LEFT, WuDongTool.SPACE_TOP)
         time.sleep(0.1)
 
@@ -141,6 +146,8 @@ class WuDongTool:
         MouseTool.click_rate_window(loc, WuDongTool.RESTAURANT_1_LEFT, WuDongTool.RESTAURANT_1_TOP)
         MouseTool.click_rate_window(loc, WuDongTool.RESTAURANT_2_LEFT, WuDongTool.RESTAURANT_2_TOP)
         MouseTool.click_rate_window(loc, WuDongTool.RESTAURANT_3_LEFT, WuDongTool.RESTAURANT_3_TOP)
+        MouseTool.drag_rel(-300, 0)
+        MouseTool.click_rate_window(loc, WuDongTool.RESTAURANT_4_LEFT, WuDongTool.RESTAURANT_4_TOP)
         WuDongTool.back_game_main_building(loc)
 
     @staticmethod
@@ -184,7 +191,28 @@ class WuDongTool:
         for i in range(2):
             for j in range(3):
                 WuDongTool.click_buy_goods(loc, start_x_rate + j * x_step, start_y_rate + i * y_step)
-        WuDongTool.click_space(loc)
+        WuDongTool.click_window_space(loc)
+
+    @staticmethod
+    def click_task(loc, wd, task_button, agree_buttons, msg, times=5):
+        i = 0
+        while i < times:
+            task_img = WuDongTool.get_main_building_img(loc, wd.get_screen_img())
+            dst = SiftTool.get_dst_by_task_button(task_button, task_img)
+            if dst is not None and len(dst) == 4:
+                print("find %s button~~~~~~~~~~~~~~~~~~~~~~~~" % msg)
+                x = int(dst[0, 0, 0]) + 12
+                y = int(dst[0, 0, 1]) + 12
+                MouseTool.click_obj(loc, x, y)
+                time.sleep(0.5)
+                for b in agree_buttons:#agree_buttons 接受人物或领取奖励
+                    dst = SiftTool.get_dst_by_button(b, task_img)
+                    if dst is not None and len(dst) == 4:
+                        MouseTool.click_obj(loc, x, y)
+                        time.sleep(0.5)
+                        break
+                i += 1
+        time.sleep(0.5)
 
     @staticmethod
     def click_buy_goods(loc, x_rate, y_rate):
@@ -207,4 +235,6 @@ class WuDongTool:
         y = int(loc[KHEIGHT] * WuDongTool.AD_CLOSE_TOP)
         MouseTool.click_obj(loc, x, y)
 
-
+    @staticmethod
+    def get_main_building_img(loc, screen_img):
+        return screen_img[:int(loc[KHEIGHT] * WuDongTool.PEOPLE_BOTTOM_RATE)]

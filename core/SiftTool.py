@@ -7,18 +7,23 @@ class SiftTool:
     SIFT = cv2.SIFT_create()
 
     @staticmethod
-    def get_dst_by_p(kp1, des1, img1, img2):
-        return SiftTool.get_dst_common(kp1, des1, img1, img2, min_match_count=6)
+    def get_dst_by_p(src_data, img2):
+        return SiftTool.get_dst_common(src_data[0], src_data[1], src_data[2],img2, min_match_count=6)
 
     @staticmethod
-    def get_dst_by_m(kp1, des1, img1, img2):
-        return SiftTool.get_dst_common(kp1, des1, img1, img2, min_match_count=8,
+    def get_dst_by_m(src_data, img2):
+        return SiftTool.get_dst_common(src_data[0], src_data[1], src_data[2], img2, min_match_count=8,
                                        obj_size=[30, 200])
 
     @staticmethod
-    def get_dst_by_button(kp1, des1, img1, img2):
-        return SiftTool.get_dst_common(kp1, des1, img1, img2, min_match_count=6,
+    def get_dst_by_button(src_data, img2):
+        return SiftTool.get_dst_common(src_data[0], src_data[1], src_data[2], img2, min_match_count=6,
                                        obj_size=[1, 1000], distance_rate=0.4)
+
+    @staticmethod
+    def get_dst_by_task_button(src_data, img2):
+        return SiftTool.get_dst_common(src_data[0], src_data[1], src_data[2], img2, min_match_count=4,
+                                       obj_size=[1, 100], distance_rate=0.4)
 
     @staticmethod
     def get_dst_common(kp1, des1, img1, img2, min_match_count=10, obj_size=[20, 100], distance_rate=0.7):
@@ -31,12 +36,13 @@ class SiftTool:
             search_params = dict(checks=50)
             flann = cv2.FlannBasedMatcher(index_params, search_params)
             matches = flann.knnMatch(des1, des2, k=2)
+            # print(matches)
             # 根据Lowe比率测试存储所有良好匹配项
             good = []
             for m, n in matches:
                 if m.distance < distance_rate * n.distance:
                     good.append(m)
-
+            # print(len(good))
             if len(good) > min_match_count:
                 src_pts = np.float32([kp1[m.queryIdx].pt for m in good]).reshape(-1, 1, 2)
                 dst_pts = np.float32([kp2[m.trainIdx].pt for m in good]).reshape(-1, 1, 2)

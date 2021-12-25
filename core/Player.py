@@ -98,7 +98,7 @@ class Player:
             image_rectangle(img, contours, self.__people_top_index)
         img = self.__click_people(img, contours)
         self.__check_power(img)
-        WuDongTool.click_space(self.__wudong_window_loc)
+        WuDongTool.click_window_space(self.__wudong_window_loc)
         self.error_times = 0
         return img
 
@@ -108,7 +108,7 @@ class Player:
         self.__people_bottom_index = int(loc[KHEIGHT] * WuDongTool.PEOPLE_BOTTOM_RATE)
 
     def __click_people(self, img, contours):
-        WuDongTool.click_space(self.__wudong_window_loc)
+        WuDongTool.click_window_space(self.__wudong_window_loc)
         # contours
         contour = sample(contours, 1)[0]
         x, y, w, h = cv2.boundingRect(contour)

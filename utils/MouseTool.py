@@ -1,3 +1,4 @@
+import time
 
 from utils.ConVar import *
 import pyautogui
@@ -34,7 +35,9 @@ class MouseTool:
     @staticmethod
     def drag_rel(x, y):
         pyautogui.mouseDown()
+        time.sleep(0.1)
         pyautogui.dragRel(x, y, mouseDownUp=False)
+        time.sleep(0.2)
         pyautogui.mouseUp()
 
     @staticmethod
