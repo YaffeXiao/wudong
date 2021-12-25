@@ -44,8 +44,8 @@ loc = wd.get_window_loc()
 #                                  screen_img)
 
 
-root_path = "E:/me/git/wudong/test_data"
-img1_path = os.path.join(root_path, "money/7.png")
-img2 = wd.get_screen_img()[int(loc[KHEIGHT] * 0.3):]
+root_path = "E:/me/git/wudong/sample/ad_close"
+img1_path = os.path.join(root_path, "3.png")
+img2 = wd.get_screen_img()#[int(loc[KHEIGHT] * 0.3):]
 img1 = cv2.imread(img1_path)
 sift_t(img1, img2)

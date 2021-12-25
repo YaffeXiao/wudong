@@ -41,6 +41,7 @@ class Player:
         self.__s_list = []
         self.__power_button = None
         self.__ad_wait_button = None
+        self.__ad_close_buttons = []
         self.__xiaoji_get_button = None
         self.__wasai_buttons = []
         self.__heart_button = None
@@ -154,14 +155,26 @@ class Player:
             print("start watch ad")
             while datetime.utcnow() < star_time + timedelta(seconds=35):
                 new_img = self.__wd_window.get_screen_img()
-                print(np.abs(new_img - last_img).max())
+                # print(np.abs(new_img - last_img).max())
                 if np.abs(new_img - last_img).max() < 10:
                     print("watch ad stop click close")
                     break
+                else:
+                    print("ad is running")
                 last_img = new_img.copy()
                 time.sleep(1)
-
             # time.sleep(35)
+            for close_b in self.__ad_close_buttons:
+                dst = SiftTool.get_dst_by_button(close_b, screen_img)
+                print(dst)
+                if dst is not None and len(dst) == 4:
+                    x = int(dst[0, 0, 0]) + 20
+                    y = int(dst[0, 0, 1]) + 15
+                    print("find close button")
+                    MouseTool.click_obj(self.__wudong_window_loc, x, y)
+                    return
+
+            print("can't find close button")
             WuDongTool.close_ad(self.__wudong_window_loc)
             return
 
@@ -202,12 +215,11 @@ class Player:
                     break
         return monster_img
 
-
     def __check_cqg(self):
         if datetime.utcnow() <= self.__last_cqg_time + timedelta(minutes=1):
             return
         print("check piggy bank ~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-        WuDongTool.click_cqg(self.__wudong_window_loc)
+        WuDongTool.click_piggy(self.__wudong_window_loc)
         self.__last_cqg_time = datetime.utcnow()
 
     def __check_wasai(self):
@@ -350,6 +362,12 @@ class Player:
         kp1, des1 = SiftTool.SIFT.detectAndCompute(img, None)
         self.__prize_button = [kp1, des1, img]
 
+        close_path = self.__root_path + "/sample/ad_close/"
+        close_file_names = os.listdir(close_path)
+        for file_name in close_file_names:
+            img = cv2.imread(close_path + file_name, 0)
+            kp1, des1 = SiftTool.SIFT.detectAndCompute(img, None)
+            self.__ad_close_buttons.append([kp1, des1, img])
 
     # def screen(self, _fun):
     #     while True:

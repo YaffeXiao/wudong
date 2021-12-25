@@ -26,9 +26,13 @@ class WuDongTool:
     CQG_LEFT = 0.6
     CQG_TOP = 0.6
 
-    #广告关闭
+    #广告关闭 高分辨率广告位置
+    # AD_CLOSE_LEFT = 0.94
+    # AD_CLOSE_TOP = 0.03
+
+    #广告关闭 低分辨率广告位置
     AD_CLOSE_LEFT = 0.91
-    AD_CLOSE_TOP = 0.04
+    AD_CLOSE_TOP = 0.06
 
     # #观看广告按钮
     # WATCH_AD_button_LEFT = 0.5
@@ -50,7 +54,6 @@ class WuDongTool:
     #靠右侧后相对位置
     RESTAURANT_4_LEFT = 0.57
     RESTAURANT_4_TOP = 0.57
-
 
     # 浴室
     SHOWERS_LEFT = 0.62
@@ -121,11 +124,13 @@ class WuDongTool:
         time.sleep(2)
 
     @staticmethod
-    def click_cqg(loc, watch_ad=False):
+    def click_piggy(loc, watch_ad=False):
         MouseTool.click_rate_window(loc, WuDongTool.CQG_LEFT, WuDongTool.CQG_TOP)
+        time.sleep(0.5)
         # 目前不看广告
         if watch_ad is False:
             MouseTool.click_rate_window(loc, WuDongTool.DWAD_LEFT, WuDongTool.DWAD_TOP)
+        time.sleep(0.5)
 
     @staticmethod
     def click_window_space(loc):
@@ -167,7 +172,7 @@ class WuDongTool:
         if watch_ad is False:
             MouseTool.click_rate_window(loc, WuDongTool.DWAD_LEFT, WuDongTool.DWAD_TOP)
         WuDongTool.back_game_main_building(loc)
-        time.sleep(0.5)
+        time.sleep(0.3)
         WuDongTool.click_back_button(loc)
 
     @staticmethod
