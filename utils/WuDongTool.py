@@ -137,10 +137,7 @@ class WuDongTool:
 
     @staticmethod
     def check_restaurant(loc):
-        MouseTool.click_rate_window(loc, WuDongTool.RESTAURANT_LEFT, WuDongTool.RESTAURANT_TOP)
-        MouseTool.reset_window_center(loc)
-        time.sleep(1)
-        MouseTool.drag_rel(300, 0)
+        WuDongTool.init_room(loc, WuDongTool.RESTAURANT_LEFT, WuDongTool.RESTAURANT_TOP)
         MouseTool.click_rate_window(loc, WuDongTool.RESTAURANT_1_LEFT, WuDongTool.RESTAURANT_1_TOP)
         MouseTool.click_rate_window(loc, WuDongTool.RESTAURANT_2_LEFT, WuDongTool.RESTAURANT_2_TOP)
         MouseTool.click_rate_window(loc, WuDongTool.RESTAURANT_3_LEFT, WuDongTool.RESTAURANT_3_TOP)
@@ -148,10 +145,7 @@ class WuDongTool:
 
     @staticmethod
     def check_showers(loc):
-        MouseTool.click_rate_window(loc, WuDongTool.SHOWERS_LEFT, WuDongTool.SHOWERS_TOP)
-        MouseTool.reset_window_center(loc)
-        time.sleep(1)
-        MouseTool.drag_rel(300, 0)
+        WuDongTool.init_room(loc, WuDongTool.SHOWERS_LEFT, WuDongTool.SHOWERS_TOP)
         MouseTool.click_rate_window(loc, WuDongTool.SHOWERS_1_LEFT, WuDongTool.SHOWERS_1_TOP)
         MouseTool.click_rate_window(loc, WuDongTool.SHOWERS_2_LEFT, WuDongTool.SHOWERS_2_TOP)
         MouseTool.click_rate_window(loc, WuDongTool.SHOWERS_3_LEFT, WuDongTool.SHOWERS_3_TOP)
@@ -159,10 +153,7 @@ class WuDongTool:
 
     @staticmethod
     def check_cinema(loc, watch_ad=False):
-        MouseTool.click_rate_window(loc, WuDongTool.CINEMA_LEFT, WuDongTool.CINEMA_TOP)
-        MouseTool.reset_window_center(loc)
-        time.sleep(1)
-        MouseTool.drag_rel(300, 0)
+        WuDongTool.init_room(loc, WuDongTool.CINEMA_LEFT, WuDongTool.CINEMA_TOP)
         MouseTool.click_rate_window(loc, WuDongTool.CINEMA_FLOWER_LEFT, WuDongTool.CINEMA_FLOWER_TOP)
         time.sleep(0.5)
         # 目前不看广告
@@ -171,6 +162,13 @@ class WuDongTool:
         WuDongTool.back_game_main_building(loc)
         time.sleep(0.5)
         WuDongTool.click_back_button(loc)
+
+    @staticmethod
+    def init_room(loc, left_rate, top_rate):
+        MouseTool.click_rate_window(loc, left_rate, top_rate, 2, 0.5)
+        MouseTool.reset_window_center(loc)
+        time.sleep(0.3)
+        MouseTool.drag_rel(300, 0)
 
     @staticmethod
     def click_wasai(loc, dst):

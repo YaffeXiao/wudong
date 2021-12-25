@@ -84,7 +84,8 @@ class Player:
         # img = self.__click_monster(img)
         # img = self.__click_people(img)
         # img = self.__check_wasai(self.__wudong_window_loc)
-        self.__check_xiaoji()
+        # self.__check_xiaoji()
+        self.__check_ct()
         # self.__rest_game()
 
         return img
@@ -139,8 +140,8 @@ class Player:
         if dst is not None and len(dst) == 4:
             print("don't have ad for watch")
             WuDongTool.click_space(self.__wudong_window_loc)
-            print("stop 60 seconds")
-            time.sleep(60)
+            print("stop 30 seconds")
+            time.sleep(30)
             return
 
         b = self.__power_button
@@ -186,7 +187,6 @@ class Player:
         monster_img = screen_img[self.__people_top_index: self.__people_bottom_index]
         for m in self.__m_list:
             dst = SiftTool.get_dst_by_m(m[0], m[1], m[2], monster_img)
-            print(dst)
             if dst is not None and len(dst) == 4:
                 # dst[:, :, 1] = dst[:, :, 1] + self.__people_top_index
                 print("click monster ")
