@@ -57,7 +57,7 @@ class WuDongTool:
 
     # 浴室
     SHOWERS_LEFT = 0.62
-    SHOWERS_TOP = 0.45
+    SHOWERS_TOP = 0.46
 
     SHOWERS_1_LEFT = 0.33
     SHOWERS_1_TOP = 0.52
@@ -146,17 +146,27 @@ class WuDongTool:
         return False
 
     @staticmethod
-    def check_restaurant(loc):
+    def check_restaurant(loc, wd=None, task_buttons=None, buttons=[]):
         WuDongTool.init_room(loc, WuDongTool.RESTAURANT_LEFT, WuDongTool.RESTAURANT_TOP)
         MouseTool.click_rate_window(loc, WuDongTool.RESTAURANT_1_LEFT, WuDongTool.RESTAURANT_1_TOP)
         MouseTool.click_rate_window(loc, WuDongTool.RESTAURANT_2_LEFT, WuDongTool.RESTAURANT_2_TOP)
         MouseTool.click_rate_window(loc, WuDongTool.RESTAURANT_3_LEFT, WuDongTool.RESTAURANT_3_TOP)
+
+        if wd is not None:
+            for task_button in task_buttons:
+                WuDongTool.click_task(loc, wd, task_button, buttons, str(task_button))
+
         MouseTool.drag_rel(-300, 0)
+        time.sleep(0.5)
+        if wd is not None:
+            for task_button in task_buttons:
+                WuDongTool.click_task(loc, wd, task_button, buttons, str(task_button))
+
         MouseTool.click_rate_window(loc, WuDongTool.RESTAURANT_4_LEFT, WuDongTool.RESTAURANT_4_TOP)
         WuDongTool.back_game_main_building(loc)
 
     @staticmethod
-    def check_showers(loc):
+    def check_showers(loc, wd=None, buttons=[]):
         WuDongTool.init_room(loc, WuDongTool.SHOWERS_LEFT, WuDongTool.SHOWERS_TOP)
         MouseTool.click_rate_window(loc, WuDongTool.SHOWERS_1_LEFT, WuDongTool.SHOWERS_1_TOP)
         MouseTool.click_rate_window(loc, WuDongTool.SHOWERS_2_LEFT, WuDongTool.SHOWERS_2_TOP)
@@ -164,7 +174,7 @@ class WuDongTool:
         WuDongTool.back_game_main_building(loc)
 
     @staticmethod
-    def check_cinema(loc, watch_ad=False):
+    def check_cinema(loc, wd=None, buttons=[], watch_ad=False):
         WuDongTool.init_room(loc, WuDongTool.CINEMA_LEFT, WuDongTool.CINEMA_TOP)
         MouseTool.click_rate_window(loc, WuDongTool.CINEMA_FLOWER_LEFT, WuDongTool.CINEMA_FLOWER_TOP)
         time.sleep(0.5)
@@ -177,7 +187,7 @@ class WuDongTool:
 
     @staticmethod
     def init_room(loc, left_rate, top_rate):
-        MouseTool.click_rate_window(loc, left_rate, top_rate, 2, 0.5)
+        MouseTool.click_rate_window(loc, left_rate, top_rate, 11, 0.01)
         MouseTool.reset_window_center(loc)
         time.sleep(0.3)
         MouseTool.drag_rel(300, 0)
@@ -202,16 +212,16 @@ class WuDongTool:
     def click_task(loc, wd, task_button, agree_buttons, msg, times=5):
         i = 0
         while i < times:
-            task_img = WuDongTool.get_main_building_img(loc, wd.get_screen_img())
-            dst = SiftTool.get_dst_by_task_button(task_button, task_img)
+            # task_img = WuDongTool.get_main_building_img(loc, wd.get_screen_img())
+            dst = SiftTool.get_dst_by_task_button(task_button, wd.get_screen_img())
             if dst is not None and len(dst) == 4:
                 print("find %s button~~~~~~~~~~~~~~~~~~~~~~~~" % msg)
-                x = int(dst[0, 0, 0]) + 12
-                y = int(dst[0, 0, 1]) + 12
+                x = int(dst[0, 0, 0]) + 10
+                y = int(dst[0, 0, 1]) + 10
                 MouseTool.click_obj(loc, x, y)
                 time.sleep(0.5)
                 for b in agree_buttons:#agree_buttons 接受人物或领取奖励
-                    dst = SiftTool.get_dst_by_button(b, task_img)
+                    dst = SiftTool.get_dst_by_button(b, wd.get_screen_img())
                     if dst is not None and len(dst) == 4:
                         MouseTool.click_obj(loc, x, y)
                         time.sleep(0.5)
@@ -227,6 +237,16 @@ class WuDongTool:
         time.sleep(0.3)
         MouseTool.click_obj(loc, loc[KWIDTH] * 0.5, loc[KHEIGHT] * 0.62)
         time.sleep(0.5)
+
+    @staticmethod
+    def search_and_click_button(loc, screen_img, button,  msg="", x_offset=50, y_offset=20, count=1, interval=0.25):
+        dst = SiftTool.get_dst_by_button(button, screen_img)
+        if dst is not None and len(dst) == 4:
+            print("find %s button and click ~~~~~~~~~~~~~~~~~~~~~~~~" % msg)
+            x = int(dst[0, 0, 0]) + x_offset
+            y = int(dst[0, 0, 1]) + y_offset
+            MouseTool.click_obj(loc, x, y, count, interval)
+            time.sleep(0.3)
 
     @staticmethod
     def draw_marker(loc, img):

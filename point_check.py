@@ -36,7 +36,7 @@ img = wd.get_screen_img()
 #
 # img1 = img[int(loc[KHEIGHT] * WuDongTool.PEOPLE_TOP_RATE):int(loc[KHEIGHT] * WuDongTool.PEOPLE_BOTTOM_RATE)]
 # img1 = img[int(loc[KHEIGHT] * WuDongTool.AD_CLOSE_LEFT):,int(loc[KWIDTH] * WuDongTool.AD_CLOSE_TOP):]
-img1 = img[int(loc[KHEIGHT] * WuDongTool.CINEMA_TOP):, int(loc[KWIDTH] * WuDongTool.CINEMA_LEFT):]
+img1 = img[int(loc[KHEIGHT] * WuDongTool.SHOWERS_TOP):, int(loc[KWIDTH] * WuDongTool.SHOWERS_LEFT):]
 # img1 = img[int(loc[KHEIGHT] *0.6):, int(loc[KWIDTH] * 0.6):]
 # x = int(loc[KWIDTH] * WuDongTool.AD_CLOSE_LEFT)
 # y = int(loc[KHEIGHT] * WuDongTool.AD_CLOSE_TOP)
