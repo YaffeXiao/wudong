@@ -226,7 +226,7 @@ class WuDongTool:
                         MouseTool.click_obj(loc, x, y)
                         time.sleep(0.5)
                         break
-                i += 1
+            i += 1
         time.sleep(0.5)
 
     @staticmethod
