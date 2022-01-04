@@ -26,8 +26,8 @@ class Player:
         self.__root_path = os.getcwd()
         self.__screen = screen
         # self.__wd_window = WindowTool()
-        self.__wd_window = WindowTool(up_offset=36)
-        # self.__wd_window = WindowTool(up_offset=30, wn="逍遥模拟器4")
+        # self.__wd_window = WindowTool(up_offset=36)
+        self.__wd_window = WindowTool(up_offset=30, wn="MuMu")
         self.__wudong_window_loc = self.__wd_window.get_window_loc()
         print("wudong_window_loc:" + str(self.__wudong_window_loc))
         self.__check_time = 1 #分钟
@@ -97,11 +97,11 @@ class Player:
         # img = self.__click_monster(img)
         # img = self.__click_people(img)
         # self.__check_wudong()
-        self.__clear_buttons()
+        # self.__clear_buttons()
         # self.__check_xiaoji()
         # self.__check_ct()
         # self.__check_right_button()
-        # self.__check_install_app()
+        self.__check_install_app()
         # self.__rest_game(True)
         # self.__check_main_building_task()
         # self.__rest_game()
@@ -211,9 +211,9 @@ class Player:
 
     def __check_install_app(self):
         time.sleep(0.5)
-        WuDongTool.close_ad(self.__wudong_window_loc)
+        # WuDongTool.close_ad(self.__wudong_window_loc)
         screen_img = self.__wd_window.get_screen_img()
-        if np.sum(screen_img[300:500, 300:500][:, :, :3] != 250) == 0:
+        if np.sum(screen_img[100:100, 100:100][:, :, :3] != 250) == 0:
             print("start install app")
             MouseTool.click_rate_window(self.__wudong_window_loc, WuDongTool.INSTALL_CLOSE_LEFT, WuDongTool.INSTALL_CLOSE_TOP)
             WuDongTool.close_ad(self.__wudong_window_loc)
