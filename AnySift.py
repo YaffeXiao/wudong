@@ -22,6 +22,7 @@ import os
 
 
 wd = WindowTool()
+# wd = WindowTool(wn="逍遥模拟器4")
 loc = wd.get_window_loc()
 # img2 = wd.get_screen_img()
 #
@@ -44,10 +45,17 @@ loc = wd.get_window_loc()
 #                                  screen_img)
 
 
+# root_path = "E:/me/git/wudong/sample/"
+# img1_path = os.path.join(root_path, "ad_close/3.png")
+# img1_path = os.path.join(root_path, "task/1.png")
+# img1_path = os.path.join(root_path, "button/2.png")
+
 root_path = "E:/me/git/wudong/sample/"
 # img1_path = os.path.join(root_path, "ad_close/3.png")
 # img1_path = os.path.join(root_path, "task/1.png")
-img1_path = os.path.join(root_path, "ms/1.png")
+img1_path = os.path.join(root_path, "wudong/5.png")
+
+
 img2 = wd.get_screen_img()#[int(loc[KHEIGHT] * 0.3):]
 img1 = cv2.imread(img1_path)
 sift_t(img1, img2)

@@ -27,16 +27,28 @@ class WuDongTool:
     CQG_TOP = 0.6
 
     #广告关闭 高分辨率广告位置
-    # AD_CLOSE_LEFT = 0.94
-    # AD_CLOSE_TOP = 0.03
+    AD_CLOSE_LEFT = 0.94
+    AD_CLOSE_TOP = 0.03
+
+    # 广告关闭 模拟器广告位置
+    # AD_CLOSE_LEFT = 0.93
+    # AD_CLOSE_TOP = 0.048
 
     #广告关闭 低分辨率广告位置
-    AD_CLOSE_LEFT = 0.91
-    AD_CLOSE_TOP = 0.06
+    # AD_CLOSE_LEFT = 0.91
+    # AD_CLOSE_TOP = 0.06
+
+    # 广告APP安装关闭
+    INSTALL_CLOSE_LEFT = 0.8
+    INSTALL_CLOSE_TOP = 0.96
 
     # #观看广告按钮
     # WATCH_AD_button_LEFT = 0.5
     # WATCH_AD_button_TOP = 0.6
+
+    #误触提示接受按钮
+    AGREE_CLOSE_LEFT = 0.5
+    AGREE_CLOSE_TOP = 0.8
 
     # 餐厅
     RESTAURANT_LEFT = 0.73
@@ -79,8 +91,21 @@ class WuDongTool:
     DWAD_LEFT = 0.3
     DWAD_TOP = 0.6
 
+
+    # BACK_BUTTON = None
+    #
+    # WUDONG_WD = None
+
     @staticmethod
     def click_back_button(loc):
+        # dst = SiftTool.get_dst_by_button(WuDongTool.BACK_BUTTON, WuDongTool.WUDONG_WD.get_screen_img())
+        # if dst is not None and len(dst) == 4:
+        #     print("find back button~~~~~~~~~~~~~~~~~~~~~~~~")
+        #     x = int(dst[0, 0, 0]) + 20
+        #     y = int(dst[0, 0, 1]) + 20
+        #     MouseTool.click_rate_window(loc, x, y)
+        # else:
+        #     MouseTool.click_rate_window(loc, WuDongTool.BACK_BUTTON_LEFT, WuDongTool.BACK_BUTTON_TOP)
         MouseTool.click_rate_window(loc, WuDongTool.BACK_BUTTON_LEFT, WuDongTool.BACK_BUTTON_TOP)
 
     @staticmethod
@@ -105,22 +130,24 @@ class WuDongTool:
 
     @staticmethod
     def rest_screen_main_building(loc):
+        print("rest screen main building")
         WuDongTool.rest_game_main_building(loc)
         i = 0
         while i < 3:
             MouseTool.reset_window_center(loc)
-            MouseTool.drag_rel(200, 0)
+            MouseTool.drag_rel(100, 0)
             time.sleep(0.2)
             i += 1
-        # j = 0
-        # while j < 3:
-        #     MouseTool.reset_window_center(loc)
-        #     MouseTool.drag_rel(0, -200)
-        #     time.sleep(0.2)
-        #     j += 1
+        j = 0
+        while j < 2:
+            MouseTool.reset_window_center(loc)
+            MouseTool.drag_rel(0, -100)
+            time.sleep(0.2)
+            j += 1
         time.sleep(1)
         MouseTool.reset_window_center(loc)
-        MouseTool.drag_rel(-int(loc[KWIDTH] / 2 + 23), 0)
+        time.sleep(0.1)
+        MouseTool.drag_rel(-int(loc[KWIDTH] / 2 - 23), 0)
         time.sleep(2)
 
     @staticmethod
@@ -130,7 +157,7 @@ class WuDongTool:
         # 目前不看广告
         if watch_ad is False:
             MouseTool.click_rate_window(loc, WuDongTool.DWAD_LEFT, WuDongTool.DWAD_TOP)
-        time.sleep(0.5)
+        time.sleep(1)
 
     @staticmethod
     def click_window_space(loc):
@@ -156,8 +183,8 @@ class WuDongTool:
             for task_button in task_buttons:
                 WuDongTool.click_task(loc, wd, task_button, buttons, str(task_button))
 
-        MouseTool.drag_rel(-300, 0)
-        time.sleep(0.5)
+        MouseTool.drag_rel(-350, 0)
+        time.sleep(1)
         if wd is not None:
             for task_button in task_buttons:
                 WuDongTool.click_task(loc, wd, task_button, buttons, str(task_button))
@@ -189,8 +216,12 @@ class WuDongTool:
     def init_room(loc, left_rate, top_rate):
         MouseTool.click_rate_window(loc, left_rate, top_rate, 11, 0.01)
         MouseTool.reset_window_center(loc)
+        time.sleep(0.5)
+        # time.sleep(3)
+        MouseTool.drag_rel(200, 0)
+        MouseTool.reset_window_center(loc)
+        MouseTool.drag_rel(200, 0)
         time.sleep(0.3)
-        MouseTool.drag_rel(300, 0)
 
     @staticmethod
     def click_wasai(loc, dst):

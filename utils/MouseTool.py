@@ -35,10 +35,12 @@ class MouseTool:
     @staticmethod
     def drag_rel(x, y):
         pyautogui.mouseDown()
-        time.sleep(0.1)
+        time.sleep(0.2)
         pyautogui.dragRel(x, y, mouseDownUp=False)
         time.sleep(0.2)
         pyautogui.mouseUp()
+
+        # pyautogui.dragRel(x, y, mouseDownUp=True)
 
     @staticmethod
     def _move(x, y):
